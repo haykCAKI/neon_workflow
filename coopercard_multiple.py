@@ -45,7 +45,6 @@ EXPECTED_DEPARA_COLS = [
 ]
 
 # URL do seu webhook n8n (copie do nó Webhook → Path = coopercard/submit)
-N8N_WEBHOOK = os.environ.get("N8N_WEBHOOK") or "https://hericktaticca.app.n8n.cloud/webhook-test/coopercard/submit"
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_files():
@@ -56,20 +55,20 @@ def upload_files():
         depara_file = request.files.get('depara_file')
 
         # Validate equal count
-        if len(dock_files) != len(matera_files):
-            return "<h3>Error: You must upload the same number of Dock and Matera files.</h3>"
+        # if len(dock_files) != len(matera_files):
+        #     return "<h3>Error: You must upload the same number of Dock and Matera files.</h3>"
         
-         # Monta o multipart/form-data para o n8n
-        files = []
-        for f in dock_files:
-            files.append(('dock_files', (f.filename, f.stream, f.mimetype)))
-        for f in matera_files:
-            files.append(('matera_files', (f.filename, f.stream, f.mimetype)))
+        #  # Monta o multipart/form-data para o n8n
+        # files = []
+        # for f in dock_files:
+        #     files.append(('dock_files', (f.filename, f.stream, f.mimetype)))
+        # for f in matera_files:
+        #     files.append(('matera_files', (f.filename, f.stream, f.mimetype)))
 
-        # POST para o n8n
-        resp = requests.post(N8N_WEBHOOK, files=files)
-        if not resp.ok:
-            return f"<h3>Erro no Webhook n8n: {resp.status_code} {resp.text}</h3>", 500
+        # # POST para o n8n
+        # resp = requests.post(N8N_WEBHOOK, files=files)
+        # if not resp.ok:
+        #     return f"<h3>Erro no Webhook n8n: {resp.status_code} {resp.text}</h3>", 500
 
         # Optional upsert Depara
         if depara_file:
